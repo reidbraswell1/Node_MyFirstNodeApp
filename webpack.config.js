@@ -16,6 +16,7 @@ const config = {
         libraryTarget: 'var',
         library: 'mylib',
     },
+    target: "node",
     plugins: [
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
@@ -93,7 +94,8 @@ const config = {
         rules: [
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                // type: 'asset',
+                //exclude: 'node_modules/'
             },
 
             // Add your rules for custom modules here
