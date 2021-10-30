@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
-    entry: './src/index.js',
+    entry: './src/app.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js',
@@ -22,8 +22,8 @@ const config = {
         new CleanWebpackPlugin(),
         new CopyPlugin({
             patterns: [
+              { from: "views", to: "views" },
               { from: "styles", to: "styles" },
-              { from: "index.html", to: "" },
               { from: "package.json", to: "" },
               { from: "webpack.config.js", to: "" }
             ],
