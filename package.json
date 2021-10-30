@@ -22,6 +22,6 @@
     "zip-webpack-plugin": "^4.0.1"
   },
   "dependencies": {
-    "http": "^0.0.1-security"
+    "ejs": "^3.1.6"
   }
 }
