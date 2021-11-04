@@ -5,6 +5,8 @@ console.log("EXERCISE 1:\n==========\n");
 
 //const http = require("http");
 import http from 'http';
+import url from 'url';
+import querystring from 'querystring';
 import fs from 'fs';
 import path from 'path';
 import ejs from 'ejs';
@@ -32,7 +34,14 @@ const server = http.createServer((req, res) => {
     */
     let htmlFile = '';
     let type = '';
-    switch(req.url) {
+    let urlToRoute = '';
+    if(req.url.indexOf('?') == -1) {
+      urlToRoute = req.url;
+    }
+    else {
+      urlToRoute = (req.url).substring(0,req.url.indexOf("?"));
+    }
+    switch(urlToRoute) {
       case '/about':
         //res.end("<h1>Hello World</h1>");
         htmlFile = 'index.ejs'
@@ -40,6 +49,39 @@ const server = http.createServer((req, res) => {
         break;
       case '/form-submission':
         // Fill in
+        switch(req.method) {
+          case "POST":
+            console.log("Form Submission Method = POST");
+            let body = '';
+        
+            // very important to handle errors
+            req.on('error', (err) => {
+              if(err) {
+                res.writeHead(500, {'Content-Type': 'text/html'});
+                res.write('An error occurred');
+                res.end();
+              }
+            });
+            // read chunks of POST data
+            req.on('data', chunk => {
+              body += chunk.toString();
+            });
+            // when complete POST data is received
+            req.on('end', () => {
+            // use parse() method
+              body = querystring.parse(body);
+              console.log(body);
+              console.log(body.name);
+
+            // rest of the code
+          });
+          case "GET":
+            console.log("Form Submission Method = GET");
+            console.log(querystring.parse(req.url));
+        }
+        const queryObject = url.parse(req.url,true).query;
+        console.log("Query Object");
+        console.log(queryObject);
       case '/styles/indexStyle.css':
         console.log("correct");
         htmlFile = 'indexStyle.css';
@@ -48,6 +90,8 @@ const server = http.createServer((req, res) => {
       default:
         //res.end("<h1>Invalid URL");
         console.log("oops");
+        console.log(req.url);
+        console.log(querystring.parse(req.url));
         htmlFile = 'oops.html';
         type = 'text/html';
         break;
