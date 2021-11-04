@@ -38,6 +38,8 @@ const server = http.createServer((req, res) => {
         htmlFile = 'index.ejs'
         type = 'text/html';
         break;
+      case '/form-submission':
+        // Fill in
       case '/styles/indexStyle.css':
         console.log("correct");
         htmlFile = 'indexStyle.css';
