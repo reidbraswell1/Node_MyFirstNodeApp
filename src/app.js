@@ -50,11 +50,24 @@ const server = http.createServer((req, res) => {
       case '/form-submission':
         // Fill in
         switch(req.method) {
+          case "GET":
+            console.log("Form Submission Method = GET");
+            console.log("\nMethod 1 url.parse");
+            const queryObject = url.parse(req.url,true).query;
+            console.log("Query Object");
+            console.log(queryObject);
+            console.log(`Query Object Name = ${queryObject.name}`);
+            console.log("\nMethod 2 URLSearchParms");
+            let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
+            console.log(`URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
+            console.log(`URLSearchParams Parameters = ${params}`);
+            console.log(`URLSearchParams.name = ${params.get("name")}\n`);
+            break;
           case "POST":
             console.log("Form Submission Method = POST");
             let body = '';
         
-            // very important to handle errors
+            // Errors
             req.on('error', (err) => {
               if(err) {
                 res.writeHead(500, {'Content-Type': 'text/html'});
@@ -75,13 +88,8 @@ const server = http.createServer((req, res) => {
 
             // rest of the code
           });
-          case "GET":
-            console.log("Form Submission Method = GET");
-            console.log(querystring.parse(req.url));
+          break;
         }
-        const queryObject = url.parse(req.url,true).query;
-        console.log("Query Object");
-        console.log(queryObject);
       case '/styles/indexStyle.css':
         console.log("correct");
         htmlFile = 'indexStyle.css';
