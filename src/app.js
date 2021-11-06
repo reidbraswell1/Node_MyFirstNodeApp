@@ -6,7 +6,6 @@ console.log("EXERCISE 1:\n==========\n");
 //const http = require("http");
 import http from 'http';
 import url from 'url';
-import querystring from 'querystring';
 import fs from 'fs';
 import path from 'path';
 import ejs from 'ejs';
@@ -59,9 +58,10 @@ const server = http.createServer((req, res) => {
             console.log(`Query Object Name = ${queryObject.name}`);
             console.log("\nMethod 2 URLSearchParms");
             let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
-            console.log(`URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
-            console.log(`URLSearchParams Parameters = ${params}`);
-            console.log(`URLSearchParams.name = ${params.get("name")}\n`);
+            console.log(`GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
+            console.log(`GET URLSearchParams Parameters = ${params}`);
+            console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
+            console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
             break;
           case "POST":
             console.log("Form Submission Method = POST");
@@ -82,9 +82,12 @@ const server = http.createServer((req, res) => {
             // when complete POST data is received
             req.on('end', () => {
             // use parse() method
-              body = querystring.parse(body);
-              console.log(body);
-              console.log(body.name);
+              //body = querystring.parse(body);
+              const postObject = new URLSearchParams(`?${body}`);
+              console.log(`POST body = ${body}`);
+              console.log(`POST Object = ${postObject}`);
+              console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
+              console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
 
             // rest of the code
           });
