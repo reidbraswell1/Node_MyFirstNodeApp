@@ -40,14 +40,17 @@ const server = http.createServer((req, res) => {
     else {
       urlToRoute = (req.url).substring(0,req.url.indexOf("?"));
     }
+    let postObject;
+    let data = '';
     switch(urlToRoute) {
       case '/about':
         //res.end("<h1>Hello World</h1>");
         htmlFile = 'index.ejs'
         type = 'text/html';
+        data = {title: 'test'};
+        //render(res, req, htmlFile, type, data);
         break;
       case '/form-submission':
-        // Fill in
         switch(req.method) {
           case "GET":
             console.log("Form Submission Method = GET");
@@ -83,35 +86,57 @@ const server = http.createServer((req, res) => {
             req.on('end', () => {
             // use parse() method
               //body = querystring.parse(body);
-              const postObject = new URLSearchParams(`?${body}`);
+              postObject = new URLSearchParams(`?${body}`);
               console.log(`POST body = ${body}`);
               console.log(`POST Object = ${postObject}`);
               console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
               console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
-
-            // rest of the code
-          });
-          break;
+              htmlFile = 'response.ejs';
+              type = 'text/html';
+              data = postObject;
+              /*
+              res.writeHead(302, {
+                location: '/form-response',
+              });
+              */
+             console.log(`post objecet before render = ${postObject}`);
+            render(res,req,"response.ejs",'text/html',postObject);
+            });
         }
+        break;
+      case '/form-response':
+        console.log(`Form Response URL Entered`);
+        htmlFile = "response.ejs";
+        type = "text/html";
+        data = postObject;
+        //render(res,req,"response.ejs",'text/html',postObject);
+        break;
       case '/styles/indexStyle.css':
         console.log("correct");
         htmlFile = 'indexStyle.css';
+        type = 'text/css';
+        break;
+      case '/styles/responseStyle.css':
+        console.log("correct");
+        htmlFile = 'responseStyle.css';
         type = 'text/css';
         break;
       default:
         //res.end("<h1>Invalid URL");
         console.log("oops");
         console.log(req.url);
-        console.log(querystring.parse(req.url));
+        //console.log(querystring.parse(req.url));
         htmlFile = 'oops.html';
         type = 'text/html';
         break;
     }
 
     if(htmlFile) {
-		  render(res, req, htmlFile, type);
+      console.log(`if htmlFile entered`);
+		  render(res, req, htmlFile, type, data);
     }
-    function render(res,req, htmlFile, type) {
+    function render(res,req, htmlFile, type, data) {
+        console.log(`---Begin Function render()---`);
         switch (type) {
           // Serve a html file
           case 'text/html':
@@ -123,7 +148,15 @@ const server = http.createServer((req, res) => {
               console.log(stats);
               if(stats) {
                 const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
-                const renderedTemplate = ejs.render(template,{title:"apple"});
+                let renderedTemplate;
+                console.log(htmlFile);
+                if(htmlFile == 'response.ejs') {
+                  renderedTemplate = ejs.render(template,{title:'Form Response',name:data.get("name"), favoriteProgrammingLanguage:data.get("favorite-programming-language")});
+                }
+                else {
+                  console.log(`rendering template`);
+                  renderedTemplate = ejs.render(template,{title:"apple"});
+                }
                 console.log("here1");
                 //fs.createReadStream(`./views/${htmlFile}`).pipe(res);
                 res.end(renderedTemplate);
@@ -149,15 +182,7 @@ const server = http.createServer((req, res) => {
             //fileStream.pipe(res);
             break;
         }
-            /*
-            if(req.url.match("\.css$")){
-              var cssPath = path.join(__dirname, 'public', req.url);
-              console.log(cssPath);
-              var fileStream = fs.createReadStream(cssPath, "UTF-8");
-              res.writeHead(200, {"Content-Type": "text/css"});
-              fileStream.pipe(res);
-            }
-            */
+        console.log(`---End Function render()---`);
       }
   });
   server.listen(8000);
