@@ -179,10 +179,13 @@ const server = http.createServer((req, res) => {
 
 function homepage(req, res, data) {
   console.log(`--- Begin Function homepage() ---`);
-  const template = fs.readFileSync(`./views/index.ejs`,'utf-8');
+  const htmlPage = 'index.ejs';
+
+  const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
   const renderedTemplate = ejs.render(template,{title:"Homepage"});
   res.write(renderedTemplate);
   res.end();
+
   console.log(`--- End Function homepage() ---`);
 }
 
@@ -247,6 +250,14 @@ function formSubmissionProcess(req, res) {
   console.log(`--- End Function formSubmissionProcess() ---`);
 }
 
-function responsePage(req, res) {
+function responsePage(req, res, data) {
+  console.log(`--- Begin Function responsePage() ---`);
+  const htmlPage = 'response.ejs';
 
+  const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
+  const renderedTemplate = ejs.render(template,{title:"Homepage"});
+  res.write(renderedTemplate);
+  res.end();
+  
+  console.log(`--- End Function responsePage() ---`);
 }
