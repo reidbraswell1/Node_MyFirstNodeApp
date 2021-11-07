@@ -12,180 +12,160 @@ import ejs from 'ejs';
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
-    //res.writeHead(200, { 'Content-Type': 'text/html' });
-    //res.end(JSON.stringify({
-      //data: 'Hello World!'
-    //}));
-    /*
-    router.css(req, res);
-    router.home(req, res);
-    router.user(req, res);
-    */
-    /*
-    const url = req.url;
-    console.log(url);
-    if(url == '/about') {
-      res.end("<h1>Hello World</h1>");
-    }
-    else {
-      res.end("<h1>Invalid URL");
-    }
-    */
-    let htmlFile = '';
-    let type = '';
-    let urlToRoute = '';
-    if(req.url.indexOf('?') == -1) {
-      urlToRoute = req.url;
-    }
-    else {
-      urlToRoute = (req.url).substring(0,req.url.indexOf("?"));
-    }
-    let postObject;
-    let data = '';
-    switch(urlToRoute) {
-      case '/about':
-        //res.end("<h1>Hello World</h1>");
-        htmlFile = 'index.ejs'
-        type = 'text/html';
-        data = {title: 'test'};
-        //render(res, req, htmlFile, type, data);
-        break;
-      case '/form-submission':
-        switch(req.method) {
-          case "GET":
-            console.log("Form Submission Method = GET");
-            console.log("\nMethod 1 url.parse");
-            const queryObject = url.parse(req.url,true).query;
-            console.log("Query Object");
-            console.log(queryObject);
-            console.log(`Query Object Name = ${queryObject.name}`);
-            console.log("\nMethod 2 URLSearchParms");
-            let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
-            console.log(`GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
-            console.log(`GET URLSearchParams Parameters = ${params}`);
-            console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
-            console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
-            break;
-          case "POST":
-            console.log("Form Submission Method = POST");
-            let body = '';
-        
-            // Errors
-            req.on('error', (err) => {
-              if(err) {
-                res.writeHead(500, {'Content-Type': 'text/html'});
-                res.write('An error occurred');
-                res.end();
-              }
-            });
-            // read chunks of POST data
-            req.on('data', chunk => {
-              body += chunk.toString();
-            });
-            // when complete POST data is received
-            req.on('end', () => {
+  let htmlFile = '';
+  let type = '';
+  let urlToRoute = '';
+  if(req.url.indexOf('?') == -1) {
+    urlToRoute = req.url;
+  }
+  else {
+    urlToRoute = (req.url).substring(0,req.url.indexOf("?"));
+  }
+  let postObject;
+  let data = '';
+  switch(urlToRoute) {
+    case '/about':
+      console.log(`--- Begin Case ${urlToRoute} ---`);
+      homepage(req,res);
+      /*
+      console.log(`--- Begin Case ${urlToRoute} ---`);
+      htmlFile = 'index.ejs'
+      type = 'text/html';
+      data = {title: 'test'};
+      //render(res, req, htmlFile, type, data);
+      */
+      console.log(`--- End Case ${urlToRoute} ---`)
+      break;
+    case '/form-submission':
+      console.log(`--- Begin Case ${urlToRoute} ---`);
+      formSubmissionProcess(req, res);
+      /*
+      switch(req.method) {
+        case "GET":
+          console.log(`--- Begin Case ${req.method}`);
+          console.log(queryObject);
+          console.log(`Query Object Name = ${queryObject.name}`);
+          console.log("\nMethod 2 URLSearchParms");
+          let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
+          console.log(`GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
+          console.log(`GET URLSearchParams Parameters = ${params}`);
+          console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
+          console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
+          console.log(`--- End Case ${req.method} ---`);
+          break;
+        case "POST":
+          console.log(`--- Begin Case ${req.method}`);
+          let body = '';
+          // Errors
+          req.on('error', (err) => {
+            if(err) {
+              res.writeHead(500, {'Content-Type': 'text/html'});
+              res.write('An error occurred');
+              res.end();
+            }
+          });
+          // read chunks of POST data
+          req.on('data', chunk => {
+            body += chunk.toString();
+          });
+          // when complete POST data is received
+          req.on('end', () => {
             // use parse() method
-              //body = querystring.parse(body);
-              postObject = new URLSearchParams(`?${body}`);
-              console.log(`POST body = ${body}`);
-              console.log(`POST Object = ${postObject}`);
-              console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
-              console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
-              htmlFile = 'response.ejs';
-              type = 'text/html';
-              data = postObject;
-              /*
-              res.writeHead(302, {
-                location: '/form-response',
-              });
-              */
-             console.log(`post objecet before render = ${postObject}`);
+            //body = querystring.parse(body);
+            postObject = new URLSearchParams(`?${body}`);
+            console.log(`POST body = ${body}`);
+            console.log(`POST Object = ${postObject}`);
+            console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
+            console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
+            htmlFile = 'response.ejs';
+            type = 'text/html';
+            data = postObject;
+            console.log(`post objecet before render = ${postObject}`);
             render(res,req,"response.ejs",'text/html',postObject);
-            });
+          });
+          console.log(`--- End Case ${req.method} ---`);
+          break;
         }
-        break;
-      case '/form-response':
-        console.log(`Form Response URL Entered`);
-        htmlFile = "response.ejs";
-        type = "text/html";
-        data = postObject;
-        //render(res,req,"response.ejs",'text/html',postObject);
+        */
+
+        console.log(`--- End Case ${urlToRoute} ---`);
         break;
       case '/styles/indexStyle.css':
-        console.log("correct");
+        console.log(`--- Begin Case ${urlToRoute} ---`);
+        /*
         htmlFile = 'indexStyle.css';
         type = 'text/css';
+        */
+        indexStyle(req,res);
+        console.log(`--- End Case ${urlToRoute} ---`);
         break;
       case '/styles/responseStyle.css':
-        console.log("correct");
+        console.log(`--- Begin Case ${urlToRoute} ---`);
         htmlFile = 'responseStyle.css';
         type = 'text/css';
         break;
       default:
-        //res.end("<h1>Invalid URL");
-        console.log("oops");
-        console.log(req.url);
+        console.log(`--- Begin Case ${urlToRoute} ---`);
         //console.log(querystring.parse(req.url));
         htmlFile = 'oops.html';
         type = 'text/html';
+        console.log(`--- End Case ${urlToRoute} ---`);
         break;
-    }
+  }
 
-    if(htmlFile) {
-      console.log(`if htmlFile entered`);
-		  render(res, req, htmlFile, type, data);
-    }
-    function render(res,req, htmlFile, type, data) {
-        console.log(`---Begin Function render()---`);
-        switch (type) {
-          // Serve a html file
-          case 'text/html':
-            fs.stat(`./views/${htmlFile}`, (err, stats) => {
-              res.statusCode = 200;
-              // Dont set content type if using ejs
-              //res.setHeader('Content-Type', 'text/html');
-              //console.log(err);
-              console.log(stats);
-              if(stats) {
-                const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
-                let renderedTemplate;
-                console.log(htmlFile);
-                if(htmlFile == 'response.ejs') {
-                  renderedTemplate = ejs.render(template,{title:'Form Response',name:data.get("name"), favoriteProgrammingLanguage:data.get("favorite-programming-language")});
-                }
-                else {
-                  console.log(`rendering template`);
-                  renderedTemplate = ejs.render(template,{title:"apple"});
-                }
-                console.log("here1");
-                //fs.createReadStream(`./views/${htmlFile}`).pipe(res);
-                res.end(renderedTemplate);
-                console.log("here2");
-              }
-              else {
-                res.statusCode = 404;
-                res.end('<h1>Sorry, page not found!</h1>');
-              }
-              console.log("here3");
-            });
-            break;
-          // Serve a css file
-          case 'text/css':
-            console.log("here css");
-            console.log(`htmlFile=${htmlFile}`)
-            let fileStream = fs.createReadStream(`./styles/${htmlFile}`, "utf-8");
-            let css = fs.readFileSync(`./styles/${htmlFile}`, "utf-8");
-            console.log(`css=${css}`);
-            //console.log(fileStream);
-            res.writeHead(200, {"Content-Type": "text/css"});
-            res.end(css);
-            //fileStream.pipe(res);
-            break;
-        }
+  if(htmlFile) {
+    console.log(`if htmlFile entered`);
+		render(res, req, htmlFile, type, data);
+  }
+
+  function render(res,req, htmlFile, type, data) {
+    console.log(`--- Begin Function render() ${htmlFile}---`);
+    switch (type) {
+      // Serve a html file
+      case 'text/html':
+        console.log(`--- Begin Case ${type} ---`);
+        fs.stat(`./views/${htmlFile}`, (err, stats) => {
+          res.statusCode = 200;
+          // Dont set content type if using ejs
+          //res.setHeader('Content-Type', 'text/html');
+          //console.log(err);
+          if(stats) {
+            const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
+            let renderedTemplate;
+            //console.log(htmlFile);
+            if(htmlFile == 'response.ejs') {
+              renderedTemplate = ejs.render(template,{title:'Form Response',name:data.get("name"), favoriteProgrammingLanguage:data.get("favorite-programming-language")});
+            }
+            else {
+              renderedTemplate = ejs.render(template,{title:"apple"});
+            }
+            //fs.createReadStream(`./views/${htmlFile}`).pipe(res);
+            res.end(renderedTemplate);
+          }
+          else {
+            res.statusCode = 404;
+            res.end('<h1>Sorry, page not found!</h1>');
+          }
+          console.log(`--- End Case ${type} ---`);
+        });
+        break;
+        // Serve a css file
+      case 'text/css':
+        console.log(`--- Begin Case ${type} ---`);
+        let fileStream = fs.createReadStream(`./styles/${htmlFile}`, "utf-8");
+        let css = fs.readFileSync(`./styles/${htmlFile}`, "utf-8");
+        //console.log(fileStream);
+        res.writeHead(200, {"Content-Type": "text/css"});
+        res.end(css);
+        //fileStream.pipe(res);
+        console.log(`--- End Case ${type} ---`);
+        break;
+      } // Switch
         console.log(`---End Function render()---`);
-      }
+    } // Render
   });
   server.listen(8000);
+  console.log("Server running at http://localhost:8000/");
 
         /*
         if(req.url.match("\.css$")){
@@ -196,3 +176,77 @@ const server = http.createServer((req, res) => {
           fileStream.pipe(res);
         }
         */
+
+function homepage(req, res, data) {
+  console.log(`--- Begin Function homepage() ---`);
+  const template = fs.readFileSync(`./views/index.ejs`,'utf-8');
+  const renderedTemplate = ejs.render(template,{title:"Homepage"});
+  res.write(renderedTemplate);
+  res.end();
+  console.log(`--- End Function homepage() ---`);
+}
+
+function indexStyle(req, res) {
+  console.log(`--- Begin Function indexStyle() ---`);
+  const styleSheet = 'indexStyle.css';
+
+  let fileStream = fs.createReadStream(`./styles/${styleSheet}`, "utf-8");
+  let css = fs.readFileSync(`./styles/${styleSheet}`, "utf-8");
+  res.writeHead(200, {"Content-Type": "text/css"});
+  res.write(css);
+  res.end();
+  console.log(`--- End Function indexStyle() ---`);
+}
+
+function formSubmissionProcess(req, res) {
+  console.log(`--- Begin Function formSubmissionProcess() ---`);
+  switch(req.method) {
+    case "GET":
+      console.log(`--- Begin Case ${req.method}`);
+      console.log(queryObject);
+      console.log(`Query Object Name = ${queryObject.name}`);
+      console.log("\nMethod 2 URLSearchParms");
+      let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
+      console.log(`GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
+      console.log(`GET URLSearchParams Parameters = ${params}`);
+      console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
+      console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
+      console.log(`--- End Case ${req.method} ---`);
+      break;
+    case "POST":
+      console.log(`--- Begin Case ${req.method}`);
+      let body = '';
+      // Errors
+      req.on('error', (err) => {
+        if(err) {
+          res.writeHead(500, {'Content-Type': 'text/html'});
+          res.write('An error occurred');
+          res.end();
+        }
+      });
+      // read chunks of POST data
+      req.on('data', chunk => {
+        body += chunk.toString();
+      });
+      // when complete POST data is received
+      req.on('end', () => {
+        // use parse() method
+        //body = querystring.parse(body);
+        postObject = new URLSearchParams(`?${body}`);
+        console.log(`POST body = ${body}`);
+        console.log(`POST Object = ${postObject}`);
+        console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
+        console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
+        htmlFile = 'response.ejs';
+        type = 'text/html';
+        data = postObject;
+        console.log(`post objecet before render = ${postObject}`);
+        render(res,req,"response.ejs",'text/html',postObject);
+      });
+  }
+  console.log(`--- End Function formSubmissionProcess() ---`);
+}
+
+function responsePage(req, res) {
+
+}
