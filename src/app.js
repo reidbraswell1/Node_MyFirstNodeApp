@@ -9,6 +9,7 @@ import url from 'url';
 import fs from 'fs';
 import path from 'path';
 import ejs from 'ejs';
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
@@ -101,14 +102,21 @@ const server = http.createServer((req, res) => {
         break;
       case '/styles/responseStyle.css':
         console.log(`--- Begin Case ${urlToRoute} ---`);
+        /*
         htmlFile = 'responseStyle.css';
         type = 'text/css';
+        */
+        responseStyle(req, res);
+        console.log(`--- End Case ${urlToRoute} ---`);
         break;
       default:
         console.log(`--- Begin Case ${urlToRoute} ---`);
         //console.log(querystring.parse(req.url));
+        oopsPage(req, res);
+        /*
         htmlFile = 'oops.html';
         type = 'text/html';
+        */
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
   }
@@ -181,7 +189,7 @@ function homepage(req, res, data) {
   console.log(`--- Begin Function homepage() ---`);
   const htmlPage = 'index.ejs';
 
-  const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
+  const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
   const renderedTemplate = ejs.render(template,{title:"Homepage"});
   res.write(renderedTemplate);
   res.end();
@@ -195,6 +203,19 @@ function indexStyle(req, res) {
 
   let fileStream = fs.createReadStream(`./styles/${styleSheet}`, "utf-8");
   let css = fs.readFileSync(`./styles/${styleSheet}`, "utf-8");
+  res.writeHead(200, {"Content-Type": "text/css"});
+  res.write(css);
+  res.end();
+  console.log(`--- End Function indexStyle() ---`);
+}
+
+function responseStyle(req, res) {
+  console.log(`--- Begin Function indexStyle() ---`);
+  const styleSheetDirectory = "./styles/";
+  const styleSheet = 'responseStyle.css';
+
+  let fileStream = fs.createReadStream(`${styleSheetDirectory}${styleSheet}`, "utf-8");
+  let css = fs.readFileSync(`${styleSheetDirectory}${styleSheet}`, "utf-8");
   res.writeHead(200, {"Content-Type": "text/css"});
   res.write(css);
   res.end();
@@ -235,27 +256,44 @@ function formSubmissionProcess(req, res) {
       req.on('end', () => {
         // use parse() method
         //body = querystring.parse(body);
-        postObject = new URLSearchParams(`?${body}`);
+        let postObject = new URLSearchParams(`?${body}`);
         console.log(`POST body = ${body}`);
         console.log(`POST Object = ${postObject}`);
         console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
         console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
-        htmlFile = 'response.ejs';
-        type = 'text/html';
-        data = postObject;
         console.log(`post objecet before render = ${postObject}`);
-        render(res,req,"response.ejs",'text/html',postObject);
+        responsePage(req, res, postObject);
+        //render(res,req,"response.ejs",'text/html',postObject);
       });
   }
   console.log(`--- End Function formSubmissionProcess() ---`);
 }
 
-function responsePage(req, res, data) {
+function responsePage(req, res, webPageData) {
   console.log(`--- Begin Function responsePage() ---`);
   const htmlPage = 'response.ejs';
 
-  const template = fs.readFileSync(`./views/${htmlFile}`,'utf-8');
-  const renderedTemplate = ejs.render(template,{title:"Homepage"});
+  const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
+  let renderedTemplate = '';
+  if(req.method == "GET") {
+    renderedTemplate = ejs.render(template,{});
+  }
+  else if(req.method == "POST") {
+    renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
+  }
+  res.write(renderedTemplate);
+  res.end();
+  
+  console.log(`--- End Function responsePage() ---`);
+}
+
+function oopsPage(req, res, webPageData) {
+  console.log(`--- Begin Function responsePage() ---`);
+  const htmlPage = 'oops.ejs';
+
+  const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
+  const renderedTemplate = ejs.render(template,{ title:"Ivalid URL Page", url:req.url });
+
   res.write(renderedTemplate);
   res.end();
   
