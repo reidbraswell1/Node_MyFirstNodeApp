@@ -109,6 +109,11 @@ const server = http.createServer((req, res) => {
         responseStyle(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
+      case '/styles/oopsStyle.css':
+        console.log(`--- Begin Case ${urlToRoute} ---`);
+        oopsStyle(req, res);
+        console.log(`--- End Case ${urlToRoute} ---`);
+        break;
       default:
         console.log(`--- Begin Case ${urlToRoute} ---`);
         //console.log(querystring.parse(req.url));
@@ -220,6 +225,19 @@ function responseStyle(req, res) {
   res.write(css);
   res.end();
   console.log(`--- End Function indexStyle() ---`);
+}
+
+function oopsStyle(req, res) {
+  console.log(`--- Begin Function oopsStyle() ---`);
+  const styleSheetDirectory = "./styles/";
+  const styleSheet = 'oopsStyle.css';
+
+  let fileStream = fs.createReadStream(`${styleSheetDirectory}${styleSheet}`, "utf-8");
+  let css = fs.readFileSync(`${styleSheetDirectory}${styleSheet}`, "utf-8");
+  res.writeHead(200, {"Content-Type": "text/css"});
+  res.write(css);
+  res.end();
+  console.log(`--- End Function oopsStyle() ---`);
 }
 
 function formSubmissionProcess(req, res) {
