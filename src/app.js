@@ -25,6 +25,12 @@ const server = http.createServer((req, res) => {
   let postObject;
   let data = '';
   switch(urlToRoute) {
+    case '/':
+      res.writeHead(302, {
+        location: "/about",
+      });
+      res.end();
+      break;
     case '/about':
       console.log(`--- Begin Case ${urlToRoute} ---`);
       homepage(req,res);
@@ -245,15 +251,13 @@ function formSubmissionProcess(req, res) {
   switch(req.method) {
     case "GET":
       console.log(`--- Begin Case ${req.method}`);
-      console.log(queryObject);
-      console.log(`Query Object Name = ${queryObject.name}`);
-      console.log("\nMethod 2 URLSearchParms");
       let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
       console.log(`GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`)
       console.log(`GET URLSearchParams Parameters = ${params}`);
       console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
       console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
       console.log(`--- End Case ${req.method} ---`);
+      responsePage(req, res, params);
       break;
     case "POST":
       console.log(`--- Begin Case ${req.method}`);
@@ -293,12 +297,14 @@ function responsePage(req, res, webPageData) {
 
   const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
   let renderedTemplate = '';
+  /*
   if(req.method == "GET") {
     renderedTemplate = ejs.render(template,{});
   }
   else if(req.method == "POST") {
+    */
     renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
-  }
+  
   res.write(renderedTemplate);
   res.end();
   
