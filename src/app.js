@@ -26,25 +26,20 @@ const server = http.createServer((req, res) => {
   let data = '';
   switch(urlToRoute) {
     case '/':
+      console.log(`--- Begin Case ${urlToRoute} Route ---`);
       res.writeHead(302, {
         location: "/about",
       });
-      res.end();
+      return res.end();
+      console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
     case '/about':
-      console.log(`--- Begin Case ${urlToRoute} ---`);
+      console.log(`--- Begin Case ${urlToRoute} Route ---`);
       homepage(req,res);
-      /*
-      console.log(`--- Begin Case ${urlToRoute} ---`);
-      htmlFile = 'index.ejs'
-      type = 'text/html';
-      data = {title: 'test'};
-      //render(res, req, htmlFile, type, data);
-      */
-      console.log(`--- End Case ${urlToRoute} ---`)
+      console.log(`--- End Case ${urlToRoute} Route ---`)
       break;
     case '/form-submission':
-      console.log(`--- Begin Case ${urlToRoute} ---`);
+      console.log(`--- Begin Case ${urlToRoute} Route ---`);
       formSubmissionProcess(req, res);
       /*
       switch(req.method) {
@@ -95,23 +90,15 @@ const server = http.createServer((req, res) => {
         }
         */
 
-        console.log(`--- End Case ${urlToRoute} ---`);
+        console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
       case '/styles/indexStyle.css':
-        console.log(`--- Begin Case ${urlToRoute} ---`);
-        /*
-        htmlFile = 'indexStyle.css';
-        type = 'text/css';
-        */
+        console.log(`--- Begin Case ${urlToRoute} Route ---`);
         indexStyle(req,res);
-        console.log(`--- End Case ${urlToRoute} ---`);
+        console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
       case '/styles/responseStyle.css':
-        console.log(`--- Begin Case ${urlToRoute} ---`);
-        /*
-        htmlFile = 'responseStyle.css';
-        type = 'text/css';
-        */
+        console.log(`--- Begin Case ${urlToRoute} Route --`);
         responseStyle(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
@@ -121,7 +108,7 @@ const server = http.createServer((req, res) => {
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
       default:
-        console.log(`--- Begin Case ${urlToRoute} ---`);
+        console.log(`--- Begin Case default ${urlToRoute} Route ---`);
         //console.log(querystring.parse(req.url));
         oopsPage(req, res);
         /*
@@ -136,6 +123,7 @@ const server = http.createServer((req, res) => {
     console.log(`if htmlFile entered`);
 		render(res, req, htmlFile, type, data);
   }
+  /*
 
   function render(res,req, htmlFile, type, data) {
     console.log(`--- Begin Function render() ${htmlFile}---`);
@@ -182,6 +170,7 @@ const server = http.createServer((req, res) => {
       } // Switch
         console.log(`---End Function render()---`);
     } // Render
+    */
   });
   server.listen(8000);
   console.log("Server running at http://localhost:8000/");
