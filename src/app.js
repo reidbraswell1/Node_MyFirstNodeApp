@@ -5,11 +5,12 @@ console.log("EXERCISE 1:\n==========\n");
 
 //const http = require("http");
 import http from 'http';
-import url from 'url';
+//import url from 'url';
 import fs from 'fs';
-import path from 'path';
+//import path from 'path';
 import ejs from 'ejs';
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
+//import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
+const serverPort = 8000;
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
@@ -66,7 +67,7 @@ const server = http.createServer((req, res) => {
         break;
     }
   });
-  server.listen(8000);
+  server.listen(serverPort);
   console.log("Server running at http://localhost:8000/");
 
         /*
