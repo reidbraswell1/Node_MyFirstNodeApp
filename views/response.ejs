@@ -11,12 +11,16 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles/responseStyle.css" />
   </head>
   <body>
     <div class="container-fluid">
-      <div class="row justify-content-center border">
-        <div class="col-6 border">
+      <div class="row justify-content-center">
+        <div class="col-6">
           <!--
           <h1 class="text-center">Node - First Server App <%= title %></h1>
           -->
@@ -25,11 +29,11 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="col-4 mt-5 pt-2 border text-center">
+        <div class="col-4 mt-5 pt-4 pb-4 text-center border">
           <h3 class="text-center">Server Response</h3>
-          <p id="response-paragraph">Hello <h4><%= name %>!</h4> Your favorite programming language is <h4><%= favoriteProgrammingLanguage %></h4>.
+          <p id="response-paragraph">Hello <h4 class="blue-color"><%= name %>!</h4> Your favorite programming language is <h4 class="green-color"><%= favoriteProgrammingLanguage %></h4>.
           </p>
-          <a class="text-center" href="/about">Home</a>
+          <a href="/about">Home</a>
         </div>
       </div>
     </div>
