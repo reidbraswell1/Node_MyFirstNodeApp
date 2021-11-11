@@ -1,26 +1,38 @@
 # Node: My First Node
 
-## Getting Started
-
-1. Open your command line and navigate to your repos directory (if you do not have a repos folder, then you can use mkdir repos to create one)
-2. Use this template repository to start a new project in your repos folder: git clone <repo_name>
-3. cd repo_name to navigate into your new repo directory
-4. Start Visual Studio Code and select 'Open Folder'. Then select repo_name to open the folder in the editor (or just type code . in your terminal inside the repo directory)
-5. Follow the instructions on the README.md file to complete exercises
-6. Open the app.js file to get started
-
 ## Exercise
 
-- Let’s use Node to write “Hello, World!” to a web page. Reference the Intro to Node.js notes, and place the following code snippets in the correct place
+In this exercise I will enhance the basic server side hello world exercise by adding some additional functionality.
 
-  - `http.createServer()`
-  - `function(request, response) {}`
-  - `response.writeHead()`
-  - `response.end()`
-  - `listen()`
-  - `function(){console.log("Server listening...")}`
+Only the following `Node.js` modules will be used:
 
-1. With the code in place, change the port from `8080` to `3000`
-2. In your cmd prompt / terminal, navigate to the project directory
-3. Once in the correct directory, run the following command: `node app.js`
-4. Open your browser, and navigate to []("http:localhost:3000")
+  - `http` (HTTP Server and Client)
+  - `fs` (File System)
+  - `ejs` (Embedded JavaScript Templating)
+  - `webpack` (JavaScript module bundler)
+  - `Bootstrap` (Used for styling)
+
+1. A variable is provided at the top of the code in app.js called `serverPort` whre you can change the port the server listens on.
+1. A EJS template will display a form where the user can enter their name and favorite progamming language.
+1. Once the user responds to the question a hello world response page will display their name and favorite programming language.
+1. A link is provided on the response page to return to the home page.
+1. Local stylesheets are also served by the application.
+
+URL's 
+  - `/` - Redirects to `/about`
+  - `/form-submission` - URL that the form submitts to.
+  - `/styles/indexStyle.css` - Public stylesheet directory.
+  - `/styles/responseStyle.css` - Public stylesheet directory.
+  - `/styles/oopsStyle.css` - Public stylesheet directory.
+
+  If the user attempts to go directly to the `/form-submission` url (without proper parameters) then a redirect will occur back to the url `/about`.
+
+  If you enter a url that is not routed by the application you will receive a customized `oops` page with invalid URL information.
+
+  ### Running the application:
+  1. `npm run build:dev`
+  1. A distributable is provided called `dist.zip` in the `dist` directory.
+  1. Unzip with the following command: `unzip -d "Your Directory Name" dist.zip`.
+  1. Navigate to the newly created directory.
+  1. `npm install` to install all dependencies.
+  1. `node main.js` will start the server from the directory name you have choosen.
