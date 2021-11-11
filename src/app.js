@@ -5,7 +5,6 @@ console.log("EXERCISE 1:\n==========\n");
 
 //const http = require("http");
 import http from 'http';
-//import url from 'url';
 import fs from 'fs';
 //import path from 'path';
 import ejs from 'ejs';
