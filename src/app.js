@@ -66,18 +66,11 @@ const server = http.createServer((req, res) => {
         break;
     }
   });
-  server.listen(serverPort);
-  console.log("Server running at http://localhost:8000/");
+  server.listen(serverPort, function(err) {
+    console.log('Server running at url http://' + require('os').hostname()+':'+ serverPort)
+  });
+  console.log(`Server running on port ${server.address().port}`);
 
-        /*
-        if(req.url.match("\.css$")){
-          var cssPath = path.join(__dirname, 'public', req.url);
-          console.log(cssPath);
-          var fileStream = fs.createReadStream(cssPath, "UTF-8");
-          res.writeHead(200, {"Content-Type": "text/css"});
-          fileStream.pipe(res);
-        }
-        */
 // Render homepage
 function homepage(req, res, data) {
   console.log(`--- Begin Function homepage() ---`);
@@ -144,6 +137,7 @@ function formSubmissionProcess(req, res) {
       console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
       console.log(`GET URLSearchParams.favorite-programming-language = ${params.get("favorite-programming-language")}\n`);
       console.log(`--- End Case ${req.method} ---`);
+      // Redirect if parameters are null to /about page
       if(params.get("name") === null || params.get("name") === undefined || 
          params.get("favoriteProgrammingLanguage") === null || params.get("favoriteProgrammingLanguage") === undefined) {
         res.writeHead(302, {
@@ -180,6 +174,7 @@ function formSubmissionProcess(req, res) {
         console.log(`POST URLSearchParams.name = ${postObject.get("name")}`);
         console.log(`POST URLSearchParams.favorite-programming-language = ${postObject.get("favorite-programming-language")}`);
         console.log(`post objecet before render = ${postObject}`);
+        // Redirect to /about page if parameters are null
         if (postObject.get("name") === null && postObject.get("favoriteProgrammingLanguage") === null) {
           console.log(postObject.get("name"));
           console.log("here1");
@@ -204,13 +199,7 @@ function responsePage(req, res, webPageData) {
 
   const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
   let renderedTemplate = '';
-  /*
-  if(req.method == "GET") {
-    renderedTemplate = ejs.render(template,{});
-  }
-  else if(req.method == "POST") {
-    */
-    renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
+  renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
   
   res.write(renderedTemplate);
   res.end();
