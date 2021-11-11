@@ -78,7 +78,7 @@ const server = http.createServer((req, res) => {
           fileStream.pipe(res);
         }
         */
-
+// Render homepage
 function homepage(req, res, data) {
   console.log(`--- Begin Function homepage() ---`);
   const htmlPage = 'index.ejs';
@@ -91,6 +91,7 @@ function homepage(req, res, data) {
   console.log(`--- End Function homepage() ---`);
 }
 
+// Serve stylesheet information for homepage
 function indexStyle(req, res) {
   console.log(`--- Begin Function indexStyle() ---`);
   const styleSheet = 'indexStyle.css';
@@ -103,6 +104,7 @@ function indexStyle(req, res) {
   console.log(`--- End Function indexStyle() ---`);
 }
 
+// Serve stylesheet information for response page
 function responseStyle(req, res) {
   console.log(`--- Begin Function indexStyle() ---`);
   const styleSheetDirectory = "./styles/";
@@ -116,6 +118,7 @@ function responseStyle(req, res) {
   console.log(`--- End Function indexStyle() ---`);
 }
 
+// Serve stylesheet information for oops invalid url page
 function oopsStyle(req, res) {
   console.log(`--- Begin Function oopsStyle() ---`);
   const styleSheetDirectory = "./styles/";
@@ -129,6 +132,7 @@ function oopsStyle(req, res) {
   console.log(`--- End Function oopsStyle() ---`);
 }
 
+// Form submission url - Process submitted form and send response page.
 function formSubmissionProcess(req, res) {
   console.log(`--- Begin Function formSubmissionProcess() ---`);
   switch(req.method) {
@@ -193,6 +197,7 @@ function formSubmissionProcess(req, res) {
   console.log(`--- End Function formSubmissionProcess() ---`);
 }
 
+// Render a response page 
 function responsePage(req, res, webPageData) {
   console.log(`--- Begin Function responsePage() ---`);
   const htmlPage = 'response.ejs';
