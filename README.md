@@ -1,5 +1,16 @@
 # Node: My First Node
 
+### HomePage
+
+![Home Page](HomePage.png)
+
+### Response Page
+![Response Page](ResponsePage.png)
+
+### URL Error Page
+![URL Error Page](URL_ErrorPage.png)
+
+
 ## Exercise
 
 In this exercise I will enhance the basic server side hello world exercise by adding some additional functionality.
